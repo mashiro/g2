@@ -1,0 +1,16 @@
+app:
+  shorten_url: false
+  format_hash: false
+
+tumblr:
+  consumer_key: xxx
+  consumer_secret: xxx
+  oauth_token: xxx
+  oauth_token_secret: xxx
+  blog_name: xxx
+  private: false
+
+bitly:
+  access_token: xxx
+  private: false
+

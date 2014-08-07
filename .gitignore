@@ -1,0 +1,7 @@
+/.bundle/
+/.direnv/
+/log/
+/tmp/
+/public/components/
+/settings.yml
+

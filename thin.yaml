@@ -1,0 +1,7 @@
+environment: production
+servers: 1
+threaded: true
+daemonize: true
+address: 127.0.0.1
+port: 16825
+

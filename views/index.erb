@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>G2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="components/jquery-file-upload/css/jquery.fileupload.css">
+    <link rel="stylesheet" href="components/bootswatch/yeti/bootstrap.min.css">
+    <link rel="stylesheet" href="css/app.css">
+  </head>
+  <body ng-app="g2">
+    <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-fixed-top .navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href=".">G2</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="<%= blog_archive_url %>">Archive</a></li>
+            <li><a href="<%= blog_mega_editor_url %>">Mega-Editor</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div id="site">
+
+        <form id="fileupload" action="webupload" method="POST" enctype="multipart/form-data" ng-controller="FileUploadCtrl" file-upload="options" ng-class="{'fileupload-processing': processing() || loadingFiles}">
+          <div class="row fileupload-buttonbar">
+            <div class="col-xs-5">
+              <span class="btn btn-success fileinput-button" ng-class="{disabled: disabled}">
+                <i class="glyphicon glyphicon-plus"></i>
+                <span>Add files...</span>
+                <input type="file" name="files[]" multiple ng-disabled="disabled">
+              </span>
+              <span class="fileupload-process"></span>
+            </div>
+            <div class="col-xs-7 fade" ng-class="{in: active()}">
+              <div class="progress progress-striped active" file-upload-progress="progress()"><div class="progress-bar progress-bar-info" ng-style="{width: num + '%'}"></div></div>
+              <div class="progress-extended">&nbsp;</div>
+            </div>
+          </div>
+
+          <table class="table table-striped files ng-cloak">
+            <tr ng-repeat="file in queue" ng-class="{'processing': file.$processing()}">
+              <td ng-switch on="!!file.thumbnailUrl">
+                <div class="preview" ng-switch-when="true">
+                  <a target="_blank" ng-href="{{file.url}}" title="{{file.name}}">
+                    <img class="img-thumbnail" ng-src="{{file.thumbnailUrl}}" alt="">
+                  </a>
+                </div>
+                <div class="preview" ng-switch-default file-upload-preview="file"></div>
+              </td>
+              <td>
+                <p class="name">{{file.name}}</p>
+                <p><a ng-if="!!file.url" ng-href="{{file.url}}">{{file.url}}</a></p>
+                <strong ng-show="file.error" class="error text-danger">{{file.error}}</strong>
+              </td>
+              <td>
+                <p class="size">{{file.size | formatFileSize}}</p>
+                <div class="progress progress-striped active fade" ng-class="{pending: 'in'}[file.$state()]" file-upload-progress="file.$progress()">
+                  <div class="progress-bar progress-bar-info" ng-style="{width: num + '%'}"></div>
+                </div>
+              </td>
+            </tr>
+          </table>
+
+        </form>
+      </div>
+
+    </div>
+
+    <script src="components/jquery/dist/jquery.min.js"></script>
+    <script src="components/angular/angular.min.js"></script>
+    <script src="components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="components/blueimp-tmpl/js/tmpl.min.js"></script>
+    <script src="components/blueimp-load-image/js/load-image.min.js"></script>
+    <script src="components/blueimp-canvas-to-blob/js/canvas-to-blob.min.js"></script>
+    <script src="components/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+    <script src="components/jquery-file-upload/js/jquery.iframe-transport.js"></script>
+    <script src="components/jquery-file-upload/js/jquery.fileupload.js"></script>
+    <script src="components/jquery-file-upload/js/jquery.fileupload-angular.js"></script>
+    <script src="components/jquery-file-upload/js/jquery.fileupload-process.js"></script>
+    <script src="components/jquery-file-upload/js/jquery.fileupload-image.js"></script>
+    <script src="components/jquery-file-upload/js/jquery.fileupload-validate.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
