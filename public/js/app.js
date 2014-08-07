@@ -12,6 +12,12 @@ angular.module('g2', ['blueimp.fileupload'])
   });
 })
 
+.filter('reverse', function() {
+  return function(items) {
+    return items.slice().reverse();
+  };
+})
+
 .controller('FileUploadCtrl', function ($scope, $http) {
   $scope.options = {
   };

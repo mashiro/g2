@@ -49,7 +49,7 @@
           </div>
 
           <table class="table table-striped files ng-cloak">
-            <tr ng-repeat="file in queue" ng-class="{'processing': file.$processing()}">
+            <tr ng-repeat="file in queue | reverse" ng-class="{'processing': file.$processing()}">
               <td ng-switch on="!!file.thumbnailUrl">
                 <div class="preview" ng-switch-when="true">
                   <a target="_blank" ng-href="{{file.url}}" title="{{file.name}}">
