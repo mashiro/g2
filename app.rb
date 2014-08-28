@@ -128,7 +128,7 @@ class G2 < Sinatra::Base
       file = params[:imagedata]
       mime_type = extract_mime_type file
       res = upload extract_io(file, mime_type)
-      format_url shorten_url res['posts'][0]['photos'][0]['original_size']['url']
+      format_url res['posts'][0]['photos'][0]['original_size']['url'], mime_type
     rescue => e
       errors = ["#{e.class} - #{e.to_s}:"] + e.backtrace.map { |s| "\t#{s}" }
       url = gist 'error.txt', errors.join("\n")
