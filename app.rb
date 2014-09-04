@@ -107,7 +107,7 @@ class G2 < Sinatra::Base
       res = upload extract_io(file, mime_type)
       photo = res['posts'][0]['photos'][0]
       original = photo['original_size']
-      thumbnail = photo['alt_sizes'][3]
+      thumbnail = photo['alt_sizes'].find { |s| s['width'] < 400 }
 
       {
         name: file[:filename],
