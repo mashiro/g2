@@ -2,7 +2,6 @@
 # -*- encoding: utf-8 -*-
 require 'bundler'
 Bundler.require
-require 'yaml'
 require 'json'
 
 class G2 < Sinatra::Base
