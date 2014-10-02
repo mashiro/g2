@@ -13,3 +13,7 @@ body {
 .preview img {
   max-height: 200px;
 }
+
+[ng-cloak] {
+  display: none !important;
+}
