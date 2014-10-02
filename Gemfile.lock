@@ -9,6 +9,7 @@ GEM
     json (1.8.1)
     mime-types (2.3)
     multipart-post (2.0.0)
+    newrelic_rpm (3.9.5.251)
     oauth (0.4.7)
     puma (2.9.1)
       rack (>= 1.1, < 2.0)
@@ -37,6 +38,7 @@ DEPENDENCIES
   faraday
   faraday_middleware
   mime-types
+  newrelic_rpm
   puma
   sinatra
   tumblr_client
