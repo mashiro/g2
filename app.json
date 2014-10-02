@@ -3,6 +3,7 @@
   "description": "Gyazo like tumblr uploader",
   "repository": "https://github.com/mashiro/g2",
   "env": {
+    "BUILDPACK_URL": "git://github.com/qnyp/heroku-buildpack-ruby-bower.git#run-bower",
     "SHORTEN_URL": {
       "description": "Shorten the response url",
       "value": "false"
