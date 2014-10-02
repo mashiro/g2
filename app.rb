@@ -13,27 +13,33 @@ class G2 < Sinatra::Base
     set :env, Enver.load {
       boolean :shorten_url, 'SHORTEN_URL', default: false
       boolean :format_hash, 'FORMAT_HASH', default: false
-      string :tumblr_consumer_key, 'TUMBLR_CONSUMER_KEY'
-      string :tumblr_consumer_secret, 'TUMBLR_CONSUMER_SECRET'
-      string :tumblr_oauth_token, 'TUMBLR_OAUTH_TOKEN'
-      string :tumblr_oauth_token_secret, 'TUMBLR_OAUTH_TOKEN_SECRET'
-      string :tumblr_blog_name, 'TUMBLR_BLOG_NAME'
-      boolean :tumblr_private, 'TUMBLR_PRIVATE', default: false
-      string :bitly_access_token, 'BITLY_ACCESS_TOKEN', default: nil
-      boolean :bitly_private, 'BITLY_PRIVATE', default: false
+
+      partial :tumblr, 'TUMBLR_' do
+        string :consumer_key, 'CONSUMER_KEY'
+        string :consumer_secret, 'CONSUMER_SECRET'
+        string :oauth_token, 'OAUTH_TOKEN'
+        string :oauth_token_secret, 'OAUTH_TOKEN_SECRET'
+        string :blog_name, 'BLOG_NAME'
+        boolean :private, 'PRIVATE', default: false
+      end
+
+      partial :bitly, 'BITLY_' do
+        string :access_token, 'ACCESS_TOKEN', default: nil
+        boolean :private, 'PRIVATE', default: false
+      end
     }
 
     set :client, Tumblr::Client.new({
-      consumer_key: settings.env.tumblr_consumer_key,
-      consumer_secret: settings.env.tumblr_consumer_secret,
-      oauth_token: settings.env.tumblr_oauth_token,
-      oauth_token_secret: settings.env.tumblr_oauth_token_secret
+      consumer_key: settings.env.tumblr.consumer_key,
+      consumer_secret: settings.env.tumblr.consumer_secret,
+      oauth_token: settings.env.tumblr.oauth_token,
+      oauth_token_secret: settings.env.tumblr.oauth_token_secret
     })
   end
 
   helpers do
     def blog_hostname
-      "#{settings.env.tumblr_blog_name}.tumblr.com"
+      "#{settings.env.tumblr.blog_name}.tumblr.com"
     end
 
     def blog_archive_url
@@ -41,7 +47,7 @@ class G2 < Sinatra::Base
     end
 
     def blog_mega_editor_url
-      "https://www.tumblr.com/mega-editor/#{settings.env.tumblr_blog_name}"
+      "https://www.tumblr.com/mega-editor/#{settings.env.tumblr.blog_name}"
     end
 
     def extract_mime_type(file)
@@ -54,7 +60,7 @@ class G2 < Sinatra::Base
 
     def upload(data)
       options = {data: data}
-      options[:state] = 'private' if settings.env.tumblr_private
+      options[:state] = 'private' if settings.env.tumblr.private
       result = settings.client.photo(blog_hostname, options)
       settings.client.posts blog_hostname, id: result['id']
     end
@@ -73,9 +79,9 @@ class G2 < Sinatra::Base
 
       res = conn.get '/v3/user/link_save' do |req|
         req.params = {
-          access_token: settings.env.bitly_access_token,
+          access_token: settings.env.bitly.access_token,
           longUrl: url,
-          private: settings.env.bitly_private
+          private: settings.env.bitly.private
         }
       end
 
