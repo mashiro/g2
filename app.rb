@@ -6,6 +6,10 @@ require 'yaml'
 require 'json'
 
 class G2 < Sinatra::Base
+  configure :production do
+    require 'newrelic_rpm'
+  end
+
   configure do
     set :env, Enver.load {
       boolean :shorten_url, 'SHORTEN_URL', default: false

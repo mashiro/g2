@@ -8,5 +8,5 @@ gem 'faraday'
 gem 'faraday_middleware'
 gem 'mime-types'
 gem 'enver'
-gem 'newrelic_rpm', group: :production
+gem 'newrelic_rpm'
 
