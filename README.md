@@ -19,14 +19,11 @@ git clone git@github.com/mashiro/g2.git
 cd g2
 bundle install
 bower install
-
-cp settings.yml.sample settings.yml
-# and edit this.
 ```
 
 ## Run
 
 ```bash
-bundle exec thin -C thin.yaml start
+bundle exec rackup
 ```
 
