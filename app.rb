@@ -7,18 +7,30 @@ require 'json'
 
 class G2 < Sinatra::Base
   configure do
-    set YAML.load_file(File.expand_path('../settings.yml', __FILE__))
+    set :env, Enver.load {
+      boolean :shorten_url, 'SHORTEN_URL', default: false
+      boolean :format_hash, 'FORMAT_HASH', default: false
+      string :tumblr_consumer_key, 'TUMBLR_CONSUMER_KEY'
+      string :tumblr_consumer_secret, 'TUMBLR_CONSUMER_SECRET'
+      string :tumblr_oauth_token, 'TUMBLR_OAUTH_TOKEN'
+      string :tumblr_oauth_token_secret, 'TUMBLR_OAUTH_TOKEN_SECRET'
+      string :tumblr_blog_name, 'TUMBLR_BLOG_NAME'
+      boolean :tumblr_private, 'TUMBLR_PRIVATE', default: false
+      string :bitly_access_token, 'BITLY_ACCESS_TOKEN', default: nil
+      boolean :bitly_private, 'BITLY_PRIVATE', default: false
+    }
+
     set :client, Tumblr::Client.new({
-      consumer_key: tumblr['consumer_key'],
-      consumer_secret: tumblr['consumer_secret'],
-      oauth_token: tumblr['oauth_token'],
-      oauth_token_secret: tumblr['oauth_token_secret']
+      consumer_key: settings.env.tumblr_consumer_key,
+      consumer_secret: settings.env.tumblr_consumer_secret,
+      oauth_token: settings.env.tumblr_oauth_token,
+      oauth_token_secret: settings.env.tumblr_oauth_token_secret
     })
   end
 
   helpers do
     def blog_hostname
-      "#{settings.tumblr['blog_name']}.tumblr.com"
+      "#{settings.env.tumblr_blog_name}.tumblr.com"
     end
 
     def blog_archive_url
@@ -26,7 +38,7 @@ class G2 < Sinatra::Base
     end
 
     def blog_mega_editor_url
-      "https://www.tumblr.com/mega-editor/#{settings.tumblr['blog_name']}"
+      "https://www.tumblr.com/mega-editor/#{settings.env.tumblr_blog_name}"
     end
 
     def extract_mime_type(file)
@@ -39,7 +51,7 @@ class G2 < Sinatra::Base
 
     def upload(data)
       options = {data: data}
-      options[:state] = 'private' if settings.tumblr['private']
+      options[:state] = 'private' if settings.env.tumblr_private
       result = settings.client.photo(blog_hostname, options)
       settings.client.posts blog_hostname, id: result['id']
     end
@@ -58,9 +70,9 @@ class G2 < Sinatra::Base
 
       res = conn.get '/v3/user/link_save' do |req|
         req.params = {
-          access_token: settings.bitly['access_token'],
+          access_token: settings.env.bitly_access_token,
           longUrl: url,
-          private: settings.bitly['private']
+          private: settings.env.bitly_private
         }
       end
 
@@ -68,8 +80,8 @@ class G2 < Sinatra::Base
     end
 
     def format_url(url, mime_type)
-      url = shorten_url(url) if boolean(params.fetch(:shorten, settings.app['shorten_url']))
-      url = "#{url}#.#{mime_type.extensions.last}" if boolean(params.fetch(:hash, settings.app['format_hash']))
+      url = shorten_url(url) if boolean(params.fetch(:shorten, settings.env.shorten_url))
+      url = "#{url}#.#{mime_type.extensions.last}" if boolean(params.fetch(:hash, settings.env.format_hash))
       url
     end
 

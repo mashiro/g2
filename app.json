@@ -1,0 +1,23 @@
+{
+  "name": "G2",
+  "description": "Gyazo like tumblr uploader",
+  "repository": "https://github.com/mashiro/g2",
+  "env": {
+    "SHORTEN_URL": {
+      "description": "Shorten the response url",
+      "value": "false"
+    },
+    "FORMAT_HASH": {
+      "description": "Append format hash to response url",
+      "value": "false"
+    },
+    "TUMBLR_CONSUMER_KEY": "",
+    "TUMBLR_CONSUMER_SECRET": "",
+    "TUMBLR_OAUTH_TOKEN": "",
+    "TUMBLR_OAUTH_TOKEN_SECRET": "",
+    "TUMBLR_BLOG_NAME": "",
+    "TUMBLR_PRIVATE": "false",
+    "BITLY_ACCESS_TOKEN": "",
+    "BITLY_PRIVATE": "false"
+  }
+}
